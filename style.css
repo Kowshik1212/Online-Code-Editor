@@ -82,6 +82,11 @@ textarea {
     padding: 0px;
 }
 
+iframe {
+    height: 100vh;
+    padding: 0px;
+}
+
 .list_elements:hover {
     cursor: pointer;
 }

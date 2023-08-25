@@ -24,18 +24,8 @@ $(document).ready(function () {
             numberOfInputs++;
         if (result)
             numberOfInputs++;
-        if (numberOfInputs == 4) {
-            $("textarea").css("width", "45vh");
-        }
-        if (numberOfInputs == 3) {
-            $("textarea").css("width", "55vh");
-        }
-        if (numberOfInputs == 2) {
-            $("textarea").css("width", "80vh");
-        }
-        if (numberOfInputs == 1) {
-            $("textarea").css("width", "100vh");
-        }
+        let windowSize = $(window).width() - 15;
+        $("textarea, iframe").css("width", `${windowSize / numberOfInputs}`);
     }
     let html = false;
     let css = false;
@@ -125,22 +115,18 @@ $(document).ready(function () {
         size();
     })
 
-    let isResizing = false;
-    $("#css-text").mousedown(function (e) {
-        isResizing = true;
-        let startX = e.pageX;
-        let initialWidth = $("#html-text").width();
-        $("document").mousemove(function (e) {
-            if (isResizing) {
-                let newWidth = initialWidth + e.pageX - startX;
-                $("#html-text").width(newWidth);
-            }
-        });
-        $("document").mouseup(function () {
-            isResizing = false;
-            $("document").off("mousemove");
-            $("document").off("mouseup");
-        });
-    })
+    $(".run_button").click(function () {
+        let user_html = $(".html").val();
+        let user_css = $(".css").val();
+        let user_js = $(".js").val();
+        let combine = `
+        <style>${user_css}</style>
+        ${user_html}
+        <script>${user_js}</script>
+        `
+        $("iframe")[0].contentWindow.document.open();
+        $("iframe")[0].contentWindow.document.writeln(combine);
+        $("iframe")[0].contentWindow.document.close();
+    });
 });
 
